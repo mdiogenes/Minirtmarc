@@ -6,7 +6,7 @@
 #    By: irifarac <irifarac@student.42barcel>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/03/20 09:40:37 by irifarac          #+#    #+#              #
-#    Updated: 2023/04/07 10:14:26 by irifarac         ###   ########.fr        #
+#    Updated: 2023/06/07 09:36:53 by irifarac         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -88,6 +88,7 @@ INC = $(LIBS_HEADER) -I./$(INCLUDE_DIR)
 
 SRC = src/main.c \
 		src/render/ft_init.c \
+		src/render/ft_free.c \
 		src/render/ft_render.c \
 		src/utilities/ft_find.c \
 		src/utilities/ft_handler.c
@@ -130,7 +131,6 @@ $(NAME): $(OBJ) $(LIBS)
 
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c Makefile
-	@echo "objetos es  $(OBJ)"
 	@mkdir -p $(@D)
 	gcc $(DFLAGS) $(CFLAGS) -O3 -c $< -o $@
 	@echo "$(GREEN)Compiling.. 🛠  $< $(RESET)"
@@ -148,7 +148,9 @@ ifneq ("$(wildcard $(OBJ) $(DEPENDS) $(OBJ_DIR))", "")
 	@make clean -C src/samplers/
 	@make clean -C src/tracers/
 	@make clean -C src/utilities/
+	@make clean -C src/color/
 	@make clean -C src/brdf/
+	@make clean -C src/lights/
 	@make clean -C src/window/
 	cd mlx && make $@
 	@echo "$(GREEN)Objetos borrados 🗑 $(RESET)"
@@ -164,10 +166,12 @@ ifneq ("$(wildcard $(NAME))", "")
 	cd src/brdf && make fclean
 	cd src/geometricobj && make fclean
 	cd src/materials && make fclean
+	cd src/lights && make fclean
 	cd src/maths && make fclean
 	cd src/samplers && make fclean
 	cd src/tracers && make fclean
 	cd src/utilities && make fclean
+	cd src/color && make fclean
 	cd src/window && make fclean
 	rm -f $(NAME)
 	@echo "$(GREEN)Ejecutables borrados ✅ $(RESET)"
